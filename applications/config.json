@@ -1,0 +1,16 @@
+{
+    "data_preparation": {
+      "input_table": "raw_data_table",
+      "output_table": "processed_data_table"
+    },
+    "model_training": {
+      "features": ["feature1", "feature2"],
+      "label": "label",
+      "model_type": "LogisticRegression",
+      "test_split": 0.2
+    },
+    "model_evaluation": {
+      "model_uri": "models:/ModelName/Production"
+    }
+  }
+  
