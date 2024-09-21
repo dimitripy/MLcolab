@@ -17,7 +17,7 @@ async def handle_request(request):
             return web.Response(status=400, text="Fehlende Projektinformationen (Projekt, Branch, Skript).")
 
         # Überprüfen und Klonen/Aktualisieren des Projekts
-        project_path = f"/path/to/projects/{project_name}/{branch}"
+        project_path = f"/path/to/projects/{project_name}/{branch}" #TODO Projektpfad auslagern
         success, message = clone_project_from_github(project_name, branch, project_path)
         if not success:
             return web.Response(status=500, text=f"Fehler beim Klonen/Aktualisieren des Projekts: {message}")
