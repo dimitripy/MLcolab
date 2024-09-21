@@ -1,0 +1,6 @@
+{
+    "project": "my_project",
+    "branch": "feature-xyz",  
+    "script": "run_analysis.py",
+    "parameters": ["--input", "data.csv"]
+  }
