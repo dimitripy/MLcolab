@@ -35,7 +35,8 @@ initialize_project() {
 
     # Registriere in der zentralen Registry und trigger den Sync-DAG
     if [ -f "$INTEGRATION_SCRIPT" ]; then
-        bash "$INTEGRATION_SCRIPT" "$PROJECT_NAME"
+        bash "$INTEGRATION_SCRIPT" "$PROJECT_NAME" \
+            "dag_path=$DAGS_DIR"
     else
         echo "intigration.sh Skript nicht gefunden unter $INTEGRATION_SCRIPT"
         exit 1
