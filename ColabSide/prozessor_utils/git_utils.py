@@ -25,8 +25,8 @@ def check_project_version(project_path, branch):
         return False
 
 def clone_project_from_github(project_name, branch, project_path):
-    github_url = f"https://github.com/your_repo/{project_name}.git"
-    branch = branch if branch else 'main'  # Verwende 'main', wenn kein Branch übergeben wurde
+    github_url = f"https://github.com/dimitripy/{project_name}.git"
+    branch = branch if branch else 'main'
     try:
         if os.path.exists(project_path):
             print(f"Projektpfad {project_path} existiert bereits. Aktualisiere Repository.")
@@ -34,10 +34,10 @@ def clone_project_from_github(project_name, branch, project_path):
             repo.git.checkout(branch)
             repo.remotes.origin.pull(branch)
         else:
-            if os.path.exists(project_path):
-                shutil.rmtree(project_path)  # Lösche den alten Pfad, falls er existiert
+            shutil.rmtree(project_path, ignore_errors=True)
             print(f"Klonen des Branches '{branch}' von {github_url}")
             git.Repo.clone_from(github_url, project_path, branch=branch)
         return True, f"Branch '{branch}' erfolgreich geklont oder aktualisiert."
     except Exception as e:
         return False, str(e)
+    

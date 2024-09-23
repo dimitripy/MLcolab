@@ -1,4 +1,4 @@
-/home/ageq/Git_Projects/MLcoworker/ColabSide/.env#!/bin/bash
+#!/bin/bash
 
 # Gemeinsame Funktionen einbinden
 source "$(dirname "${BASH_SOURCE[0]}")/Comms/common_functions.sh"
@@ -11,10 +11,11 @@ ENV_FILE="$SCRIPT_DIR/ColabSide/.env"  # Pfad zur .env Datei
 COLABSIDE_DIR="$SCRIPT_DIR/ColabSide"  # Pfad zum ColabSide-Verzeichnis
 CONFIG_FILE="$SCRIPT_DIR/../dags/config.json"  # Pfad zur config.json Datei
 DAGS_DIR="$SCRIPT_DIR/dags"
+INTEGRATION_SCRIPT="$SCRIPT_DIR/Comms/intigration.sh"  # Pfad zum intigration.sh Skript
 
 # .env Datei erstellen
 create_env_file() {
-    local env_file=ENV_FILE
+    local env_file="$ENV_FILE"
     cat <<EOF > "$env_file"
 NGROK_AUTHTOKEN=
 PROJECT_PATH_TEMPLATE=
@@ -23,23 +24,26 @@ EOF
     echo ".env Datei wurde erfolgreich erstellt unter $env_file"
 }
 
-
 # Initialisierungsfunktion
 initialize_project() {
     log "$PROJECT_NAME" "Starte Initialisierung des Projekts..."
 
+    #1. Import_Colabside.ipynb ausführen
+
     # Erstelle .env Datei im ColabSide-Verzeichnis
-    create_env_file "$ENV_FILE"
+    create_env_file
 
-    # Registriere in der zentralen Registry
-    register_in_registry "$PROJECT_NAME" "$DAGS_DIR" 
-
-    # Trigger den Sync-DAG in Airflow
-    trigger_sync_dag
+    # Registriere in der zentralen Registry und trigger den Sync-DAG
+    if [ -f "$INTEGRATION_SCRIPT" ]; then
+        bash "$INTEGRATION_SCRIPT" "$PROJECT_NAME"
+    else
+        echo "intigration.sh Skript nicht gefunden unter $INTEGRATION_SCRIPT"
+        exit 1
+    fi
 
     # Richte ColabSide-Verzeichnis ein
     #TODO erstelle die Funktion setup_colabside
-    setup_colabside "$PROJECT_NAME" "$COLABSIDE_DIR"
+    #setup_colabside "$PROJECT_NAME" "$COLABSIDE_DIR"
 
     log "$PROJECT_NAME" "Initialisierung des Projekts abgeschlossen."
 }
@@ -58,13 +62,11 @@ case $choice in
         ;;
     5)
         log "$PROJECT_NAME" "Dummy-Test wird durchgeführt..."
-        # Optonaler Ort um den Test DAG zu triggern
-
+        # Optionaler Ort um den Test DAG zu triggern
         ;;
     9)
         log "$PROJECT_NAME" "Hard Reset wird durchgeführt..."
         # Hier wird der Hard Reset durchgeführt, indem alle bisherigen Daten gelöscht werden
-        #TODO erstelle die Funktion hard_reset
         rm -rf "$COLABSIDE_DIR/.env"
         rm -rf "$COLABSIDE_DIR"
         initialize_project

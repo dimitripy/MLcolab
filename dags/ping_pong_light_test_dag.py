@@ -36,8 +36,8 @@ ngrok_url = config.get('ngrok_url')
 
 def trigger_coworker_script_ping():
     payload = {
-        'project': 'pingpong-test',
-        'branch': 'main',
+        'project': 'MLcoworker',
+        'branch': 'slim',
         'script': 'ping_pong.py',
         'parameters': ['ping']  # Übergabeparameter hier
     }
@@ -51,8 +51,8 @@ def trigger_coworker_script_ping():
 
 def trigger_coworker_script_ding():
     payload = {
-        'project': 'pingpong-test',
-        'branch': 'main',
+        'project': 'MLcoworker',
+        'branch': 'slim',
         'script': 'ding_dong.py',
         'parameters': ['ding']  # Übergabeparameter hier
     }

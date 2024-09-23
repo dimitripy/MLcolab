@@ -38,8 +38,8 @@ ngrok_url = config.get('ngrok_url')
 
 def trigger_coworker_script_test(test_case):
     payload = {
-        'project': 'pingpong-test',
-        'branch': 'main',
+        'project': 'MLcoworker',
+        'branch': 'slim',
         'script': 'ping_pong.py',
         'parameters': ['ping']
     }

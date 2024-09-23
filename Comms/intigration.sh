@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# Überprüfen, ob die erforderlichen Argumente übergeben wurden
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <PROJECT_NAME>"
+  exit 1
+fi
+
+PROJECT_NAME=$1
+
 # Aktuelles Verzeichnis des Skripts herausfinden
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Ableiten des Quellverzeichnisses (angenommen, es ist relativ zum Skriptverzeichnis)
-SOURCE_DIR="$(realpath "${SCRIPT_DIR}/../datalake_dags")"
+SOURCE_DIR="$(realpath "${SCRIPT_DIR}/../dags")"
 
 # Prüfen, ob das Quellverzeichnis existiert
 if [ ! -d "$SOURCE_DIR" ];then
@@ -20,8 +28,7 @@ if [ ! -f "$REGISTRY_SCRIPT" ];then
   exit 1
 fi
 
-# Projektname und DAG-Pfad bestimmen
-PROJECT_NAME=$(basename "$SOURCE_DIR")
+# DAG-Pfad bestimmen
 DAG_PATH="$SOURCE_DIR"  # Der absolute Pfad wurde bereits mit `realpath` ermittelt
 
 # Backup-Verzeichnis und Pfad zur API-Schlüsseldatei bestimmen
