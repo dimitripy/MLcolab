@@ -14,24 +14,14 @@ DAGS_DIR="$SCRIPT_DIR/dags"
 INTEGRATION_SCRIPT="$SCRIPT_DIR/Comms/intigration.sh"  # Pfad zum intigration.sh Skript
 
 # .env Datei erstellen
-create_env_file() {
-    local env_file="$ENV_FILE"
-    cat <<EOF > "$env_file"
-NGROK_AUTHTOKEN=
-PROJECT_PATH_TEMPLATE=
-PORT=5000
-EOF
-    echo ".env Datei wurde erfolgreich erstellt unter $env_file"
-}
+
 
 # Initialisierungsfunktion
 initialize_project() {
     log "$PROJECT_NAME" "Starte Initialisierung des Projekts..."
 
     #1. Import_Colabside.ipynb ausführen
-
     # Erstelle .env Datei im ColabSide-Verzeichnis
-    create_env_file
 
     # Registriere in der zentralen Registry und trigger den Sync-DAG
     if [ -f "$INTEGRATION_SCRIPT" ]; then
