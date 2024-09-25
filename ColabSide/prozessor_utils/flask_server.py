@@ -53,3 +53,20 @@ def execute_script_sync(project_path, script_name, parameters):
             return False, result.stderr
     except Exception as e:
         return False, str(e)
+    
+'''
+#Option nach freien Port zu suchen
+import socket
+
+def find_free_port(starting_port=5000):
+    port = starting_port
+    while True:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(('localhost', port)) != 0:  # Port ist frei
+                return port
+            port += 1  # Nächsten Port ausprobieren
+
+def run_flask():
+    port = find_free_port()  # Finde den nächsten freien Port
+    app.run(port=port, debug=True)
+'''
