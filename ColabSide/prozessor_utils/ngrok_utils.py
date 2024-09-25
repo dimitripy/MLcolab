@@ -2,11 +2,9 @@
 import asyncio
 from pyngrok import ngrok
 
-
-
 async def run_process(cmd):
     print('>>> starting', *cmd)
-    p = await asyncio.subprocess.create_subprocess_exec(
+    p = await asyncio.create_subprocess_exec(
         *cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
@@ -25,11 +23,11 @@ async def start_ngrok(authtoken, port):
     try:
         ngrok.kill()  # Beendet ngrok, falls es bereits läuft
         await run_process(['ngrok', 'config', 'add-authtoken', authtoken])
-        public_url = ngrok.connect(port).public_url 
+        public_url = ngrok.connect(port).public_url
         print(f"ngrok-Tunnel geöffnet unter {public_url}")
         print("Test mit:")
         print(f"curl {public_url}/health")
-        
+
     except Exception as e:
         print(f"Fehler beim Starten von ngrok: {str(e)}")
 
