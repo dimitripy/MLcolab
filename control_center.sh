@@ -3,25 +3,51 @@
 # Gemeinsame Funktionen einbinden
 source "$(dirname "${BASH_SOURCE[0]}")/Comms/common_functions.sh"
 
-PROJECT_NAME="mlcoworker"
+# .env Datei einlesen
+ENV_FILE="$(dirname "${BASH_SOURCE[0]}")/.env"
+if [ -f "$ENV_FILE" ]; then
+    export $(grep -v '^#' "$ENV_FILE" | xargs)
+else
+    echo ".env Datei $ENV_FILE nicht gefunden!"
+    exit 1
+fi
 
 # Verzeichnisse und Dateien definieren
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENV_FILE="$SCRIPT_DIR/ColabSide/.env"  # Pfad zur .env Datei
 COLABSIDE_DIR="$SCRIPT_DIR/ColabSide"  # Pfad zum ColabSide-Verzeichnis
-CONFIG_FILE="$SCRIPT_DIR/../dags/config.json"  # Pfad zur config.json Datei
 DAGS_DIR="$SCRIPT_DIR/dags"
 INTEGRATION_SCRIPT="$SCRIPT_DIR/Comms/intigration.sh"  # Pfad zum intigration.sh Skript
+CUSTOM_FUNCTIONS_DIR="$SCRIPT_DIR/Customs"  # Pfad zum CustomFunctions-Verzeichnis
 
-# .env Datei erstellen
+# Überprüfe und installiere erforderliche Python-Pakete
+install_python_packages() {
+    log "$PROJECT_NAME" "Überprüfe und installiere erforderliche Python-Pakete..."
 
+    REQUIRED_PKG=("pydrive" "gitpython")
+    for PKG in "${REQUIRED_PKG[@]}"; do
+        if ! python3 -c "import $PKG" &> /dev/null; then
+            log "$PROJECT_NAME" "Installiere $PKG..."
+            pip3 install $PKG
+        else
+            log "$PROJECT_NAME" "$PKG ist bereits installiert."
+        fi
+    done
+
+    log "$PROJECT_NAME" "Alle erforderlichen Python-Pakete sind installiert."
+}
+
+# Google Drive Authentifizierung und Projektverzeichnis erstellen
+setup_colabside() {
+    log "$PROJECT_NAME" "Richte ColabSide-Verzeichnis ein..."
+
+    python3 "$CUSTOM_FUNCTIONS_DIR/import_colabside.py" "$PROJECT_NAME" "$REPO_URL" "$BRANCH" "$NGROK_AUTHTOKEN" "$PORT"
+
+    log "$PROJECT_NAME" "ColabSide-Verzeichnis eingerichtet."
+}
 
 # Initialisierungsfunktion
 initialize_project() {
     log "$PROJECT_NAME" "Starte Initialisierung des Projekts..."
-
-    #1. Import_Colabside.ipynb ausführen
-    # Erstelle .env Datei im ColabSide-Verzeichnis
 
     # Registriere in der zentralen Registry und trigger den Sync-DAG
     if [ -f "$INTEGRATION_SCRIPT" ]; then
@@ -32,9 +58,11 @@ initialize_project() {
         exit 1
     fi
 
+    # Installiere erforderliche Python-Pakete
+    install_python_packages
+
     # Richte ColabSide-Verzeichnis ein
-    #TODO erstelle die Funktion setup_colabside
-    #setup_colabside "$PROJECT_NAME" "$COLABSIDE_DIR"
+    setup_colabside
 
     log "$PROJECT_NAME" "Initialisierung des Projekts abgeschlossen."
 }

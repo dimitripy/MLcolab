@@ -1,0 +1,52 @@
+# MLcoworker
+
+## Konfiguration
+
+Erstelle eine `.env`-Datei im Projektverzeichnis mit folgendem Inhalt:
+
+```txt
+PROJECT_NAME=mlcoworker
+REPO_URL=https://github.com/dimitripy/MLcoworker.git
+BRANCH=develop
+NGROK_AUTHTOKEN=dein-ngrok-authtoken
+PORT=5558
+```
+
+* PROJECT_NAME: Der Name des Projekts.
+* REPO_URL: Die URL des Git-Repositories.
+* BRANCH: Der Branch des Git-Repositories.
+* NGROK_AUTHTOKEN: Dein Ngrok-Authtoken (zu finden unter: [Ngrok Dashboard](https://dashboard.ngrok.com/get-started/your-authtoken)).
+* PORT: Der Port, der verwendet werden soll.
+
+
+## Funktionen des control_center.sh-Skripts
+Das `control_center.sh`-Skript bietet verschiedene Funktionen zur Verwaltung und Initialisierung des Projekts. Hier sind die verfügbaren Optionen:
+
+```bash
+chmod +x control_center.sh
+./control_center.sh
+```
+
+Auswahl `1` Projekt initialisieren \
+Diese Option startet die Initialisierung des Projekts. Dabei werden folgende Schritte ausgeführt:
+
+- Registrierung und Triggern des Sync-DAGs: Das Projekt wird in der zentralen Registry registriert und der Sync-DAG wird getriggert.
+- Installation der erforderlichen Python-Pakete: Die erforderlichen Python-Pakete (pydrive und gitpython) werden überprüft und installiert.
+- Einrichtung des ColabSide-Verzeichnisses: Das ColabSide-Verzeichnis wird eingerichtet, indem das Git-Projekt geklont und die Konfigurationsdateien erstellt werden.
+
+Auswahl `5` Pingpong-Test \
+Diese Option führt einen Dummy-Test durch. Dies kann verwendet werden, um sicherzustellen, dass das Setup korrekt funktioniert.
+
+TODO: Option "8" nur alles löschen
+
+Auswahl `9` Hard Reset (alles löschen und neu erstellen) \
+Diese Option führt einen Hard Reset durch, indem alle bisherigen Daten gelöscht und das Projekt neu erstellt wird.
+
+TODO: bereinigen von Google Drive Verzechnisse
+
+Auswahl `0` Beenden
+Diese Option beendet das Skript.
+
+## Start mit Import_Colabside.ipynb-Skrips
+
+Das `Import_Colabside.ipynb` kann direkt in Google-Colab impotiert werden und hat die gelichen Funktionen wie das `control_center.sh` Skript
