@@ -3,3 +3,6 @@
 /ColabSide/.env
 /dags/config.json
 .env
+/venv
+client_secrets.json
+/logs

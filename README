@@ -2,6 +2,37 @@
 
 ## Konfiguration
 
+
+### Erstellen der `client_secrets.json` Datei
+
+TODO sollte umgesetzt und getestet 
+
+Um die Google Drive API zu verwenden, benötigst du eine `client_secrets.json` Datei. Folge diesen Schritten, um die Datei zu erstellen:
+
+1. Gehe zur [Google Cloud Console](https://console.cloud.google.com/).
+2. Erstelle ein neues Projekt oder wähle ein bestehendes Projekt aus.
+3. Navigiere zu **APIs & Services** > **Credentials**.
+4. Klicke auf **Create Credentials** und wähle **OAuth 2.0 Client IDs**.
+5. Wähle **Web application** als Anwendungstyp und konfiguriere die autorisierten Redirect-URIs (z.B. `http://localhost:8080/`).
+6. Lade die `client_secrets.json` Datei herunter und speichere sie im Projektverzeichnis.
+
+Die `client_secrets.json` Datei sollte wie folgt aussehen:
+
+```json
+{
+  "web": {
+    "client_id": "YOUR_CLIENT_ID",
+    "project_id": "YOUR_PROJECT_ID",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "YOUR_CLIENT_SECRET",
+    "redirect_uris": [
+      "http://localhost:8080/"
+    ]
+  }
+}
+```
 Erstelle eine `.env`-Datei im Projektverzeichnis mit folgendem Inhalt:
 
 ```txt

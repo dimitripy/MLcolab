@@ -73,3 +73,4 @@ create_config_json() {
 }
 EOF
     echo "config.json Datei wurde erfolgreich erstellt unter $config_file"
+}
