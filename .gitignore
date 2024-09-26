@@ -1,3 +1,7 @@
 
 /private_key.pem
 /Tests/config.json
+/ColabSide/.env
+/dags/config.json
+*.log
+/logs/
